@@ -43,6 +43,7 @@ outputs:
           compatibility. This compatibility enables newer CUDA runtimes to work with
           older display drivers. Used for Tesla cards only.
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
   - name: cuda-compat-impl
     version: {{ driver_version }}
@@ -76,6 +77,7 @@ outputs:
           compatibility. This compatibility enables newer CUDA runtimes to work with
           older display drivers. Used for Tesla cards only.
       doc_url: https://docs.nvidia.com/cuda/index.html
+      dev_url: https://docs.nvidia.com/cuda/index.html
 
 about:
   home: https://developer.nvidia.com/cuda-toolkit
