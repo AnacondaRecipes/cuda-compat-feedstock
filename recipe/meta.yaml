@@ -38,12 +38,11 @@ outputs:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
-      license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA Compatibility Platform
       description: |
           Package containing all the necessary CUDA driver files related to forward
           compatibility. This compatibility enables newer CUDA runtimes to work with
-          older display drivers. Used for Tesla cards only.
+          older display drivers.
       doc_url: https://docs.nvidia.com/cuda/index.html
       dev_url: https://docs.nvidia.com/cuda/index.html
 
@@ -82,12 +81,11 @@ outputs:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
-      license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA Compatibility Platform
       description: |
           Package containing all the necessary CUDA driver files related to forward
           compatibility. This compatibility enables newer CUDA runtimes to work with
-          older display drivers. Used for Tesla cards only.
+          older display drivers.
       doc_url: https://docs.nvidia.com/cuda/index.html
       dev_url: https://docs.nvidia.com/cuda/index.html
 
@@ -95,12 +93,11 @@ about:
   home: https://developer.nvidia.com/cuda-toolkit
   license_file: LICENSE
   license: LicenseRef-NVIDIA-End-User-License-Agreement
-  license_url: https://docs.nvidia.com/cuda/eula/index.html
   summary: CUDA Compatibility Platform
   description: |
       Package containing all the necessary CUDA driver files related to forward
       compatibility. This compatibility enables newer CUDA runtimes to work with
-      older display drivers. Used for Tesla cards only.
+      older display drivers.
   doc_url: https://docs.nvidia.com/cuda/index.html
   dev_url: https://docs.nvidia.com/cuda/index.html
 
