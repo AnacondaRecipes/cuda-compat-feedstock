@@ -25,7 +25,7 @@ requirements:
     - cf-nvidia-tools 1.*  # [linux]
 
 outputs:
-  - name: cuda-compat
+  - name: {{ name }}
     requirements:
       run:
         - {{ pin_subpackage("cuda-compat-impl", exact=True) }}
@@ -45,13 +45,12 @@ outputs:
       doc_url: https://docs.nvidia.com/cuda/index.html
       dev_url: https://docs.nvidia.com/cuda/index.html
 
-  - name: cuda-compat-impl
+  - name: {{ name }}-impl
     version: {{ driver_version }}
     files:
       - cuda-compat
     requirements:
       build:
-        - libstdcxx-ng {{ cxx_compiler_version }}
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
