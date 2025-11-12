@@ -50,6 +50,10 @@ outputs:
       - cuda-compat
     requirements:
       build:
+        # Temporarily pin GCC version
+        # TODO: remove this for CUDA 13.0 builds
+        - gcc_impl_{{ target_platform }} ==11.2.0
+        - gxx_impl_{{ target_platform }} ==11.2.0
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
