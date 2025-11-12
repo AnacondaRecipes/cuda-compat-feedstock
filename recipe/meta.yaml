@@ -23,6 +23,8 @@ build:
 requirements:
   build:
     - cf-nvidia-tools 1.*  # [linux]
+  overlinking_ignore_patterns:
+    - "libgcc"
 
 outputs:
   - name: {{ name }}
@@ -50,15 +52,15 @@ outputs:
     files:
       - cuda-compat
     requirements:
-      host:
-        - libgcc-ng {{ c_compiler_version }}
-        - libstdcxx-ng {{ cxx_compiler_version }}
-        - {{ stdlib("c") }}
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
+      # host:
+      #  - libgcc-ng {{ c_compiler_version }}
+      #  - libstdcxx-ng {{ cxx_compiler_version }}
+      #  - {{ stdlib("c") }}
+      #  - {{ compiler("c") }}
+      #  - {{ compiler("cxx") }}
       build:
-        - libgcc-ng {{ c_compiler_version }}
-        - libstdcxx-ng {{ cxx_compiler_version }}
+        #- libgcc-ng {{ c_compiler_version }}
+        #- libstdcxx-ng {{ cxx_compiler_version }}
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
