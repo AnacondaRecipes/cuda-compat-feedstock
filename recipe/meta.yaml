@@ -50,6 +50,12 @@ outputs:
     files:
       - cuda-compat
     requirements:
+      host:
+        - libgcc-ng {{ c_compiler_version }}
+        - libstdcxx-ng {{ cxx_compiler_version }}
+        - {{ stdlib("c") }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
       build:
         - libgcc-ng {{ c_compiler_version }}
         - libstdcxx-ng {{ cxx_compiler_version }}
