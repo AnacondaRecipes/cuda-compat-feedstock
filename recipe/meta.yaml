@@ -51,6 +51,7 @@ outputs:
       - cuda-compat
     requirements:
       build:
+        - libstdcxx-ng {{ cxx_compiler_version }}
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
