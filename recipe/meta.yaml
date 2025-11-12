@@ -19,8 +19,8 @@ build:
   skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
-  overlinking_ignore_patterns:
-    - '**/libcudadebugger.so*'
+  # overlinking_ignore_patterns:
+  #  - '**/libcudadebugger.so*'
 
 requirements:
   build:
@@ -52,15 +52,17 @@ outputs:
     files:
       - cuda-compat
     requirements:
-      # host:
-      #  - libgcc-ng {{ c_compiler_version }}
-      #  - libstdcxx-ng {{ cxx_compiler_version }}
-      #  - {{ stdlib("c") }}
-      #  - {{ compiler("c") }}
-      #  - {{ compiler("cxx") }}
+      # We are adding the 'host' dependencies due to GCC 15 overlinking issue
+      host:
+       - libgcc-ng {{ c_compiler_version }}
+       - libstdcxx-ng {{ cxx_compiler_version }}
+       - {{ stdlib("c") }}
+       - {{ compiler("c") }}
+       - {{ compiler("cxx") }}
       build:
-        #- libgcc-ng {{ c_compiler_version }}
-        #- libstdcxx-ng {{ cxx_compiler_version }}
+        # Pinning `libgcc-ng` and `libstdcxx-ng` due to GCC 15 overlinking issue
+        - libgcc-ng {{ c_compiler_version }}
+        - libstdcxx-ng {{ cxx_compiler_version }}
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
