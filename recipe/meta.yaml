@@ -19,12 +19,12 @@ build:
   skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
+  overlinking_ignore_patterns:
+    - "libgcc"
 
 requirements:
   build:
     - cf-nvidia-tools 1.*  # [linux]
-  overlinking_ignore_patterns:
-    - "libgcc"
 
 outputs:
   - name: {{ name }}
