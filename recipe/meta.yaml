@@ -20,7 +20,7 @@ build:
   script_env:
     - DRV_VERSION={{ driver_version }}
   overlinking_ignore_patterns:
-    - "libgcc"
+    - '**/libgcc_s.so*'
 
 requirements:
   build:
