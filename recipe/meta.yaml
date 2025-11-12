@@ -50,13 +50,15 @@ outputs:
       - cuda-compat
     requirements:
       build:
-        # Temporarily pin GCC version
-        # TODO: remove this for CUDA 13.0 builds
-        - gcc_impl_{{ target_platform }} ==11.2.0
-        - gxx_impl_{{ target_platform }} ==11.2.0
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
+    # These seem to be required for GCC 15
+    # Pinning GCC 11 didn't work
+    ignore_run_exports:
+        - libstdcxx-ng
+      overlinking_ignore_patterns:
+        - "libgcc_s.so.1"
     test:
       commands:
         - test -f $PREFIX/cuda-compat/libcuda.so.{{ driver_version }}
