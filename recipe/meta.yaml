@@ -54,6 +54,7 @@ outputs:
         - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
+        - libstdcxx {{ cxx_compiler_version }}
     test:
       commands:
         - test -f $PREFIX/cuda-compat/libcuda.so.{{ driver_version }}
