@@ -1,9 +1,0 @@
-# Disable overlinking errors, there are false positives now that GCC 15 has been released.
-#  - Needed DSO lib/libstdc++.so.6
-#  - Needed DSO lib/libgcc_s.so.1
-# Please refer to 'abseil-cpp-feedstock' for more details
-# Ref: https://github.com/AnacondaRecipes/abseil-cpp-feedstock
-# build_parameters:
-#   - "--suppress-variables"
-#   - "--skip-existing"
-#   - "--no-error-overlinking"

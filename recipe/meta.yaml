@@ -16,15 +16,9 @@ source:
 
 build:
   number: 0
-  skip: true  # [osx or win or ppc64le]
+  skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
-  # overlinking_ignore_patterns:
-  #  - '**/libcudadebugger.so*'
-
-requirements:
-  build:
-    - cf-nvidia-tools 1.*  # [linux]
 
 requirements:
   build:
@@ -32,7 +26,6 @@ requirements:
 
 outputs:
   - name: cuda-compat
-
     requirements:
       run:
         - {{ pin_subpackage("cuda-compat-impl", exact=True) }}
@@ -43,6 +36,7 @@ outputs:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA Compatibility Platform
       description: |
         Package containing all the necessary CUDA driver files related to forward
@@ -51,23 +45,12 @@ outputs:
       doc_url: https://docs.nvidia.com/cuda/index.html
       dev_url: https://docs.nvidia.com/cuda/index.html
 
-  - name: {{ name }}-impl
+  - name: cuda-compat-impl
     version: {{ driver_version }}
     files:
       - cuda-compat
     requirements:
-      # We are adding the 'host' dependencies due to GCC 15 overlinking issue
-      host:
-       - libgcc-ng {{ c_compiler_version }}
-       - libstdcxx-ng {{ cxx_compiler_version }}
-       - {{ stdlib("c") }}
-       - {{ compiler("c") }}
-       - {{ compiler("cxx") }}
       build:
-        # Pinning `libgcc-ng` and `libstdcxx-ng` due to GCC 15 overlinking issue
-        - libgcc-ng {{ c_compiler_version }}
-        - libstdcxx-ng {{ cxx_compiler_version }}
-        - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ stdlib("c") }}
@@ -87,6 +70,7 @@ outputs:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA Compatibility Platform
       description: |
         Package containing all the necessary CUDA driver files related to forward
@@ -99,6 +83,7 @@ about:
   home: https://developer.nvidia.com/cuda-toolkit
   license_file: LICENSE
   license: LicenseRef-NVIDIA-End-User-License-Agreement
+  license_url: https://docs.nvidia.com/cuda/eula/index.html
   summary: CUDA Compatibility Platform
   description: |
     Package containing all the necessary CUDA driver files related to forward
@@ -108,6 +93,8 @@ about:
   dev_url: https://docs.nvidia.com/cuda/index.html
 
 extra:
+  skip-lints:
+    - license_file_overspecified
   feedstock-name: cuda-compat
   recipe-maintainers:
     - conda-forge/cuda
