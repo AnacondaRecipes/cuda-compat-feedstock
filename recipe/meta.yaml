@@ -1,33 +1,31 @@
 {% set name = "cuda-compat" %}
-{% set driver_version = "570.124.06" %}
-{% set cuda_version = "12.8.1" %}
+{% set driver_version = "580.95.05" %}
+{% set cuda_version = "13.0.2" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set extension = "tar.xz" %}  # [not win]
 
 package:
-  name: {{ name|lower }}
+  name: {{ name|lower }}-split
   version: {{ cuda_version }}
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/nvidia_driver/{{ platform }}/nvidia_driver-{{ platform }}-{{ driver_version }}-archive.{{ extension }}
-  sha256: 0fcaa9b47c124cca981df5155e2826615de3f28e31a27e139af8901e92d38b34  # [linux64]
-  sha256: 0edad79f9f52818d4b03bcc06ee4ef2ea81136330381347696fd3f804087f54b  # [aarch64]
+  sha256: 3528df4fb0c7a1665ae2af5d26effeb67f76fc86742ffc1defd7714408405d4d  # [linux64]
+  sha256: 95b52919632928d7a245e5696b71cd68285e6bffd1f22cdcd4f9686d5d5b0b09  # [aarch64]
 
 build:
   number: 0
   skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
-  # overlinking_ignore_patterns:
-  #  - '**/libcudadebugger.so*'
 
 requirements:
   build:
     - cf-nvidia-tools 1.*  # [linux]
 
 outputs:
-  - name: {{ name }}
+  - name: cuda-compat
     requirements:
       run:
         - {{ pin_subpackage("cuda-compat-impl", exact=True) }}
@@ -38,33 +36,24 @@ outputs:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA Compatibility Platform
       description: |
-          Package containing all the necessary CUDA driver files related to forward
-          compatibility. This compatibility enables newer CUDA runtimes to work with
-          older display drivers.
+        Package containing all the necessary CUDA driver files related to forward
+        compatibility. This compatibility enables newer CUDA runtimes to work with
+        older display drivers. Used for Tesla cards only.
       doc_url: https://docs.nvidia.com/cuda/index.html
       dev_url: https://docs.nvidia.com/cuda/index.html
 
-  - name: {{ name }}-impl
+  - name: cuda-compat-impl
     version: {{ driver_version }}
     files:
       - cuda-compat
     requirements:
-      # We are adding the 'host' dependencies due to GCC 15 overlinking issue
-      host:
-       - libgcc-ng {{ c_compiler_version }}
-       - libstdcxx-ng {{ cxx_compiler_version }}
-       - {{ stdlib("c") }}
-       - {{ compiler("c") }}
-       - {{ compiler("cxx") }}
       build:
-        # Pinning `libgcc-ng` and `libstdcxx-ng` due to GCC 15 overlinking issue
-        - libgcc-ng {{ c_compiler_version }}
-        - libstdcxx-ng {{ cxx_compiler_version }}
-        - {{ stdlib("c") }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
+        - {{ stdlib("c") }}
     test:
       commands:
         - test -f $PREFIX/cuda-compat/libcuda.so.{{ driver_version }}
@@ -81,11 +70,12 @@ outputs:
       home: https://developer.nvidia.com/cuda-toolkit
       license_file: LICENSE
       license: LicenseRef-NVIDIA-End-User-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/eula/index.html
       summary: CUDA Compatibility Platform
       description: |
-          Package containing all the necessary CUDA driver files related to forward
-          compatibility. This compatibility enables newer CUDA runtimes to work with
-          older display drivers.
+        Package containing all the necessary CUDA driver files related to forward
+        compatibility. This compatibility enables newer CUDA runtimes to work with
+        older display drivers. Used for Tesla cards only.
       doc_url: https://docs.nvidia.com/cuda/index.html
       dev_url: https://docs.nvidia.com/cuda/index.html
 
@@ -93,14 +83,18 @@ about:
   home: https://developer.nvidia.com/cuda-toolkit
   license_file: LICENSE
   license: LicenseRef-NVIDIA-End-User-License-Agreement
+  license_url: https://docs.nvidia.com/cuda/eula/index.html
   summary: CUDA Compatibility Platform
   description: |
-      Package containing all the necessary CUDA driver files related to forward
-      compatibility. This compatibility enables newer CUDA runtimes to work with
-      older display drivers.
+    Package containing all the necessary CUDA driver files related to forward
+    compatibility. This compatibility enables newer CUDA runtimes to work with
+    older display drivers. Used for Tesla cards only.
   doc_url: https://docs.nvidia.com/cuda/index.html
   dev_url: https://docs.nvidia.com/cuda/index.html
 
 extra:
+  skip-lints:
+    - license_file_overspecified
+  feedstock-name: cuda-compat
   recipe-maintainers:
     - conda-forge/cuda
