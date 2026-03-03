@@ -48,6 +48,9 @@ outputs:
 
   - name: cuda-compat-impl
     version: {{ driver_version }}
+    build:                                 # [linux and aarch64]
+      overlinking_ignore_patterns:         # [linux and aarch64]
+        - cuda-compat/libcudadebugger.so*  # [linux and aarch64]
     files:
       - cuda-compat
     requirements:
