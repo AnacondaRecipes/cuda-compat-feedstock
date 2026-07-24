@@ -6,6 +6,12 @@
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set extension = "tar.xz" %}  # [not win]
 
+# Packages released by this recipe:
+#  * cuda-compat-impl <driver_version>
+#  * cuda-compat <cuda_version>
+#
+# Check for driver version changes during CTK minor and patch updates
+
 package:
   name: {{ name|lower }}-split
   version: {{ cuda_version }}
@@ -16,7 +22,7 @@ source:
   sha256: 98b044e17e3b9d7ef27ad9bfd231af966744c9fb05b70fb43b5a000dd087952b  # [aarch64]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
