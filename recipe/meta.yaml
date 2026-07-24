@@ -1,10 +1,16 @@
 {% set name = "cuda-compat" %}
 {% set driver_version = "610.43.02" %}
-{% set cuda_version = "13.3.0" %}
+{% set cuda_version = "13.3.1" %}
 {% set cuda_major_minor = cuda_version.split('.')[:2] | join('.') %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set extension = "tar.xz" %}  # [not win]
+
+# Packages released by this recipe:
+#  * cuda-compat-impl <driver_version>
+#  * cuda-compat <cuda_version>
+#
+# Check for driver version changes during CTK minor and patch updates
 
 package:
   name: {{ name|lower }}-split
@@ -16,7 +22,7 @@ source:
   sha256: 98b044e17e3b9d7ef27ad9bfd231af966744c9fb05b70fb43b5a000dd087952b  # [aarch64]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
@@ -49,9 +55,13 @@ outputs:
 
   - name: cuda-compat-impl
     version: {{ driver_version }}
-    build:                                 # [linux and aarch64]
+    build:
       overlinking_ignore_patterns:         # [linux and aarch64]
         - cuda-compat/libcudadebugger.so*  # [linux and aarch64]
+      # The libnvidia-pkcs11* libs optionally dlopen OpenSSL at runtime.
+      missing_dso_whitelist:
+        - '*/libcuda.so*'
+        - '*/libcrypto.so*'
     files:
       - cuda-compat
     requirements:
@@ -69,6 +79,12 @@ outputs:
         - test -L $PREFIX/cuda-compat/libnvidia-nvvm.so
         - test -f $PREFIX/cuda-compat/libnvidia-ptxjitcompiler.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libnvidia-ptxjitcompiler.so.1
+        - test -f $PREFIX/cuda-compat/libnvidia-tileiras.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-gpucomp.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-nvvm70.so.4
+        - test -f $PREFIX/cuda-compat/libnvidia-nvvm.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-pkcs11.so.{{ driver_version }}           # [linux64]
+        - test -f $PREFIX/cuda-compat/libnvidia-pkcs11-openssl3.so.{{ driver_version }}  # [linux64]
         - test -f $PREFIX/cuda-compat/libcudadebugger.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libcudadebugger.so.1
     about:
