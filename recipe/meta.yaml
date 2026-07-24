@@ -60,6 +60,11 @@ outputs:
         - cuda-compat/libcudadebugger.so*  # [linux and aarch64]
     files:
       - cuda-compat
+    build:
+      # The libnvidia-pkcs11* libs optionally dlopen OpenSSL at runtime.
+      missing_dso_allowlist:
+        - '*/libcuda.so*'
+        - '*/libcrypto.so*'
     requirements:
       build:
         - {{ compiler("c") }}
@@ -75,6 +80,12 @@ outputs:
         - test -L $PREFIX/cuda-compat/libnvidia-nvvm.so
         - test -f $PREFIX/cuda-compat/libnvidia-ptxjitcompiler.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libnvidia-ptxjitcompiler.so.1
+        - test -f $PREFIX/cuda-compat/libnvidia-tileiras.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-gpucomp.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-nvvm70.so.4
+        - test -f $PREFIX/cuda-compat/libnvidia-nvvm.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-pkcs11.so.{{ driver_version }}           # [linux64]
+        - test -f $PREFIX/cuda-compat/libnvidia-pkcs11-openssl3.so.{{ driver_version }}  # [linux64]
         - test -f $PREFIX/cuda-compat/libcudadebugger.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libcudadebugger.so.1
     about:
