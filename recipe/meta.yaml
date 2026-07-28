@@ -49,15 +49,14 @@ outputs:
 
   - name: cuda-compat-impl
     version: {{ driver_version }}
-    build:                                 # [linux and aarch64]
+    build:
       overlinking_ignore_patterns:         # [linux and aarch64]
         - cuda-compat/libcudadebugger.so*  # [linux and aarch64]
+      # The libnvidia-pkcs11* libs optionally dlopen OpenSSL at runtime.
+      missing_dso_whitelist:
+        - '*/libcrypto.so*'
     files:
       - cuda-compat
-    build:
-      # The libnvidia-pkcs11* libs optionally dlopen OpenSSL at runtime.
-      missing_dso_allowlist:
-        - '*/libcrypto.so*'
     requirements:
       build:
         - {{ compiler("c") }}
