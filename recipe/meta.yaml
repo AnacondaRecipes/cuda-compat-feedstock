@@ -16,8 +16,8 @@ source:
   sha256: f3e02edc1a1080f44ec69478011e73218c7e20eaf52422963fd084ad0310bb64  # [aarch64]
 
 build:
-  number: 1
-  skip: true  # [osx or win or ppc64le]
+  number: 2
+  skip: true  # [osx or win]
   script_env:
     - DRV_VERSION={{ driver_version }}
 
@@ -48,9 +48,13 @@ outputs:
 
   - name: cuda-compat-impl
     version: {{ driver_version }}
-    build:                                 # [linux and aarch64]
+    build:
       overlinking_ignore_patterns:         # [linux and aarch64]
         - cuda-compat/libcudadebugger.so*  # [linux and aarch64]
+      # The libnvidia-pkcs11* libs optionally dlopen OpenSSL at runtime.
+      missing_dso_whitelist:
+        - '*/libcuda.so*'
+        - '*/libcrypto.so*'
     files:
       - cuda-compat
     requirements:
@@ -66,8 +70,12 @@ outputs:
         - test -f $PREFIX/cuda-compat/libnvidia-nvvm.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libnvidia-nvvm.so.4
         - test -L $PREFIX/cuda-compat/libnvidia-nvvm.so
+        - test -f $PREFIX/cuda-compat/libnvidia-nvvm70.so.4
         - test -f $PREFIX/cuda-compat/libnvidia-ptxjitcompiler.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libnvidia-ptxjitcompiler.so.1
+        - test -f $PREFIX/cuda-compat/libnvidia-tileiras.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-gpucomp.so.{{ driver_version }}
+        - test -f $PREFIX/cuda-compat/libnvidia-pkcs11-openssl3.so.{{ driver_version }}  # [linux64]
         - test -f $PREFIX/cuda-compat/libcudadebugger.so.{{ driver_version }}
         - test -L $PREFIX/cuda-compat/libcudadebugger.so.1
     about:
